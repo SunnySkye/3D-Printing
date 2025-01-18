@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resin Print Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resin Print Cost Calculator</h1>
+        <label for="resin">Amount of Resin Used (ml):</label>
+        <input type="number" id="resin" placeholder="Enter resin used in ml">
+
+        <button onclick="calculateCost()">Calculate Cost</button>
+
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        function calculateCost() {
+            const resinCostPerLitre = 40; // AUD per litre
+            const gloveCostPerBox = 20; // AUD per box of 100 gloves
+            const glovesPerPrint = 4; // gloves per print
+            const ipaCostPerLitre = 10; // AUD per litre
+            const ipaPerResinLitre = 2; // 2 litres of IPA per 1 litre of resin
+            const filmCostPerPrint = 0.8; // AUD per print for film wear
+
+            // Get user input
+            const resinInput = document.getElementById('resin').value;
+            const resinUsed = parseFloat(resinInput) / 1000; // Convert ml to litres
+
+            if (isNaN(resinUsed) || resinUsed <= 0) {
+                alert("Please enter a valid positive number for resin used.");
+                return;
+            }
+
+            // Assuming one print for simplicity since number of prints is removed
+            const numberOfPrints = 1;
+
+            // Calculate costs
+            const resinCost = resinUsed * resinCostPerLitre;
+            const gloveCost = (numberOfPrints * glovesPerPrint / 100) * gloveCostPerBox;
+            const ipaUsed = resinUsed * ipaPerResinLitre;
+            const ipaCost = ipaUsed * ipaCostPerLitre;
+            const filmCost = numberOfPrints * filmCostPerPrint;
+
+            const totalCost = resinCost + gloveCost + ipaCost + filmCost;
+
+            // Display the result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p><strong>Breakdown of Costs:</strong></p>
+                <p>Resin Cost: \$${resinCost.toFixed(2)} AUD</p>
+                <p>Glove Cost: \$${gloveCost.toFixed(2)} AUD</p>
+                <p>IPA Cost: \$${ipaCost.toFixed(2)} AUD</p>
+                <p>Film Wear Cost: \$${filmCost.toFixed(2)} AUD</p>
+                <p><strong>Total Cost: \$${totalCost.toFixed(2)} AUD</strong></p>
+            `;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
